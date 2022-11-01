@@ -1,38 +1,37 @@
-import template from './main.template';
-import Header from '../components/header';
+import template from '@pages/main.template.hbs';
 
-import '../styles/index.css';
-import CoinList from '../components/coinList';
-import CoinData from '../api/coinData';
-import { COINLIST_URL, COIN_DOMAIN } from '../lib/constant';
+import Header from '@components/header';
+import CoinList from '@components/coinList';
+
+import CoinData from '@api/coinData';
+
+import { COINLIST_URL } from '@lib/constant';
+
+import '@styles/index.css';
 
 export default class Main {
-    #element;
+    #root;
     #template;
     #components;
     #store;
     #api;
 
-    constructor(elem, store) {
-        this.#element = document.querySelector(elem);
+    constructor(root, store) {
+        this.#root = document.querySelector(root);
         this.#template = template;
-        this.#components = [];
         this.#store = store;
-        this.#api = new CoinData(`${COIN_DOMAIN}${COINLIST_URL}`);
+        this.#api = new CoinData(COINLIST_URL);
 
-        this.render();
+        this.#components = [];
     }
 
     setComponents() {
-        //header 컴포넌트 생성
         const headerComponent = new Header('#header');
         this.addComponent(headerComponent);
 
-        const { coinData } = this.#store;
+        const { coinData: COINDATA } = this.#store;
 
-        const coinListComponent = new CoinList('#coinlist', {
-            COINDATA: coinData,
-        });
+        const coinListComponent = new CoinList('#coinlist', { COINDATA });
         this.addComponent(coinListComponent);
     }
 
@@ -42,10 +41,10 @@ export default class Main {
 
     async render() {
         if (this.#store.coinData.length === 0) {
-            this.#store.setCoinData(await this.#api.getCoinData());
+            this.#store.setCoinData(await this.#api.getData());
         }
 
-        this.#element.innerHTML = this.#template;
+        this.#root.innerHTML = this.#template();
 
         this.setComponents();
         this.#components.map((component) => component.render());

@@ -41,13 +41,31 @@ module.exports = {
                 },
                 exclude: /node_modules/,
             },
+            {
+                test: /\.hbs$/,
+                use: ['handlebars-loader'],
+                exclude: /node_modules/,
+            },
         ],
+    },
+
+    resolve: {
+        extensions: ['.js'],
+        alias: {
+            '@': path.resolve(__dirname, 'src/'),
+            '@pages': path.resolve(__dirname, 'src/pages/'),
+            '@core': path.resolve(__dirname, 'src/core/'),
+            '@components': path.resolve(__dirname, 'src/components/'),
+            '@api': path.resolve(__dirname, 'src/api/'),
+            '@lib': path.resolve(__dirname, 'src/lib/'),
+            '@styles': path.resolve(__dirname, 'src/styles/'),
+        },
     },
 
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'index.html'),
+            template: path.join(__dirname, 'public', 'index.html'),
         }),
     ],
 };

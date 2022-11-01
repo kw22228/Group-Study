@@ -1,5 +1,5 @@
-import Component from '../core/component';
-import template from './header.template';
+import Component from '@core/component';
+import template from '@components/header.template.hbs';
 
 export default class Header extends Component {
     constructor(container) {

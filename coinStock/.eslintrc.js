@@ -1,4 +1,4 @@
-odule.exports = {
+module.exports = {
     env: {
         browser: true,
         es2021: true,
@@ -21,5 +21,8 @@ odule.exports = {
         ],
         'no-plusplus': 'off',
         'spaced-comment': 'off',
+        'lines-between-class-members': 'off',
+        'linebreak-style': 'off',
+        'no-underscore-dangle': 'off',
     },
 };

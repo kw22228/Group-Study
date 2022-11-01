@@ -1,7 +1,5 @@
-import axios from 'axios';
-
-import Component from '../core/component';
-import template from './coinList.template';
+import Component from '@core/component';
+import template from '@components/coinList.template.hbs';
 
 export default class CoinList extends Component {
     constructor(container, data) {

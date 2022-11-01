@@ -1,14 +1,9 @@
-import axios from 'axios';
+import Api from '@core/api';
 
-export default class CoinData {
-    #url;
-    constructor(url) {
-        this.#url = url;
-    }
+export default class CoinData extends Api {
+    async getData(params) {
+        const data = await this.request(params);
 
-    async getCoinData() {
-        const res = await axios.get(this.#url);
-
-        return res.data.slice(0, 100);
+        return data.slice(0, 100);
     }
 }
