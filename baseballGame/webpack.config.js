@@ -15,6 +15,19 @@ module.exports = {
     filename: '[name].[chunkhash].js',
   },
 
+  devServer: {
+    port: 9999,
+    compress: true,
+    client: {
+      overlay: {
+        errors: true,
+      },
+    },
+    hot: true,
+    open: true,
+    historyApiFallback: true,
+  },
+
   module: {
     rules: [
       {
