@@ -22,5 +22,6 @@ module.exports = {
     'no-plusplus': 'off',
     'spaced-comment': 'off',
     'lines-between-class-members': 'off',
+    'no-unused-expressions': 'off',
   },
 };

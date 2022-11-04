@@ -17,7 +17,7 @@ export default class App {
     return /* html */ `
         <h1>숫자 야구게임</h1>
         <form id="form">
-            <input type="text" id="input">
+            <input type="text" id="input" maxLength=3>
             <button id="addBtn">확인</button>
         </form>
         <h3>결과</h3>
@@ -36,13 +36,7 @@ export default class App {
 
     for (let i = 0; i < 3; i++) {
       const index = value.indexOf(this.#state.randomNumber[i]);
-      if (index > -1) {
-        if (index === i) {
-          strike += 1;
-        } else {
-          ball += 1;
-        }
-      }
+      if (index > -1) index === i ? strike++ : ball++;
     }
 
     this.#state.gameCount++;
@@ -64,9 +58,11 @@ export default class App {
   }
 
   resultRender({ strike, ball }) {
+    const { gameCount } = this.#state;
+
     if (this.checkStrike(strike)) {
       this.#rootElement.querySelector('#result').innerHTML = /* html */ `
-            <h3>정답을 맞추셧습니다. ${this.#state.gameCount}</h3>
+            <h3>정답을 맞추셧습니다. ${gameCount}회</h3>
             <h4>게임을 새로 시작하겠습니까?</h4>
             <button id="resetBtn">게임 재시작</button>
         `;
@@ -81,7 +77,10 @@ export default class App {
 
     //게임 안끝남
     const div = document.createElement('div');
-    div.innerHTML = `스트라이크 :${strike}, 볼 :${ball}, 횟수 : ${this.#state.gameCount}회`;
+    div.innerHTML = !(strike || ball)
+      ? `낫싱 ${gameCount}회`
+      : `스트라이크 :${strike}, 볼 :${ball}, 횟수 : ${gameCount}회`;
+
     this.#rootElement.querySelector('#result').appendChild(div);
   }
 
