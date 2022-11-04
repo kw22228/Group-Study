@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint src --fix",
-    "build": "NODE_ENV=development webpack --progress"
+    "build": "NODE_ENV=development webpack --progress",
+    "start": "webpack serve --progress"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "html-webpack-plugin": "^5.5.0",
     "prettier": "^2.7.1",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
   }
 }
