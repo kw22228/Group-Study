@@ -10,6 +10,7 @@ export default class App {
     <h1> 숫자 야구 게임 </h1>
     <form id = "form">
         <input type="text" id="input">
+        ..? 웹팩 너무 많이 에러뜸
 
     `;
   }
