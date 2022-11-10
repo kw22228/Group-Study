@@ -77,9 +77,10 @@ export default class RacingCarGame {
   }
 
   playEnd() {
-    const max = [...this.#state].reduce((pre, [_, value]) => {
-      return Math.max(pre, value.length);
-    }, Number.MIN_SAFE_INTEGER);
+    const max = [...this.#state].reduce(
+      (pre, [_, value]) => Math.max(pre, value.length),
+      Number.MIN_SAFE_INTEGER,
+    );
 
     const result = [...this.#state].filter(([_, value]) => value.length === max);
 
