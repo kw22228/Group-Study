@@ -1,6 +1,6 @@
-import pickRandomNumber from './lib/utils/pickRandomNumber';
+import pickRandomNumber from '@lib/utils/pickRandomNumber';
 
-export default class App {
+export default class BaseBallGame {
   #rootElement;
   #state;
 
