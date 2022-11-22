@@ -4,7 +4,7 @@ export default class Component {
   #state;
 
   constructor(target, props = {}) {
-    this.#target = document.querySelector(target);
+    this.#target = target;
     this.#props = props;
 
     this.setup();
@@ -12,7 +12,9 @@ export default class Component {
     this.render();
     this.mounted();
   }
-
+  get props() {
+    return this.#props;
+  }
   get target() {
     return this.#target;
   }

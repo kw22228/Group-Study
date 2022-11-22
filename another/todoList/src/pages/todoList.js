@@ -1,78 +1,116 @@
 import Component from '@core/Component';
+import AddTitle from '@components/AddTitle';
+import List from '../components/List';
 
 export default class TodoList extends Component {
   setup() {
     this.state = {
-      TodoList: [
-        { Todo: ['reading', 'sleeping'] }, //
-      ],
+      TodoList: [{ Todo: ['reading', 'sleeping'] }],
     };
   }
 
-  setEvent() {
-    this.addEvent('click', '#addTitleBtn', () => {
-      const { value } = this.target.querySelector('#todoTitle');
-      const { TodoList } = this.state;
+  template() {
+    return /* html */ `
+        <div class='addTitleArea'></div>
+        <div class='listArea'></div>
+    `;
+  }
 
-      if (!value) return false;
+  mounted() {
+    const { TodoList } = this.state;
 
-      this.setState({ TodoList: [...TodoList, { [value]: [] }] });
-    }).addEvent('click', '#addBtn', ({ target }) => {
-      const { title } = target.closest('[data-title]').dataset;
-      const { value } = target.previousElementSibling;
-
-      if (!value) return false;
-
-      const { TodoList } = this.state;
-      this.setState({
-        TodoList: TodoList.map((todo) => {
-          const [todoTitle, todoValue] = Object.entries(todo)[0];
-
-          if (title !== todoTitle) return todo;
-
-          return {
-            [todoTitle]: [...todoValue, value],
-          };
-        }),
-      });
+    new AddTitle(document.querySelector('.addTitleArea'), {
+      onAddTitle: this.onAddTitle.bind(this),
+    });
+    new List(document.querySelector('.listArea'), {
+      TodoList,
+      onAddList: this.onAddList.bind(this),
+      onDeleteList: this.onDeleteList.bind(this),
+      onModifyList: this.onModifyList.bind(this),
     });
   }
 
-  template() {
+  onAddTitle() {
+    const { value } = this.target.querySelector('#todoTitle');
     const { TodoList } = this.state;
 
-    return /* html */ `
-        <div>
-          <input id="todoTitle" type="text" value="" />
-          <button id="addTitleBtn">추가</button>
-        </div>
+    if (!value) return false;
 
-        ${TodoList.map((todos) => {
-          const [key, value] = Object.entries(todos)[0];
+    this.setState({ TodoList: [...TodoList, { [value]: [] }] });
+  }
 
-          return /* html */ `
-            <div style="border:1px solid black; margin-top:10px;" data-title='${key}'>
-              <h1>${key}</h1>
-              <div class="addList">
-                <input class="todoText" type="text" value=""/>
-                <button id="addBtn">입력</button>
-              </div>
-              <div class="list">
-                ${value
-                  .map((v, index) => {
-                    return /* html */ `
-                    <div data-idx=${index}>
-                      <span>${v}</span>
-                      <button class="modifyBtn">수정</button>
-                      <button class="deleteBtn">삭제</button>
-                    </div>
-                  `;
-                  })
-                  .join('')}
-              </div>
-            </div>
-          `;
-        }).join('')}
-    `;
+  onAddList({ target }) {
+    const { title } = target.closest('[data-title]').dataset;
+    const { value } = target.previousElementSibling;
+
+    if (!value) return false;
+
+    const { TodoList } = this.state;
+
+    this.setState({
+      TodoList: TodoList.map((todo) => {
+        const [todoTitle, todoValue] = Object.entries(todo)[0];
+
+        if (title !== todoTitle) return todo;
+
+        return {
+          [todoTitle]: [...todoValue, value],
+        };
+      }),
+    });
+  }
+
+  onDeleteList({ target }) {
+    const $idx = target.closest('[data-idx]');
+    const { title } = target.closest('[data-title]').dataset;
+    const { idx } = $idx.dataset;
+
+    const { TodoList } = this.state;
+
+    this.setState({
+      TodoList: TodoList.map((todo) => {
+        const [todoTitle, todoValue] = Object.entries(todo)[0];
+
+        if (title !== todoTitle) return todo;
+
+        todoValue.splice(idx, 1);
+
+        return { [todoTitle]: todoValue };
+      }),
+    });
+  }
+
+  onModifyList({ target }) {
+    const $idx = target.closest('[data-idx]');
+    const $textSpan = $idx.children[0];
+    const { title } = target.closest('[data-title]').dataset;
+    const { idx } = $idx.dataset;
+
+    const flag = target.textContent;
+
+    if (flag === '수정') {
+      const text = $textSpan.textContent;
+
+      $textSpan.innerHTML = /* html */ `<input type="text" value="${text}" />`;
+      target.innerText = '수정완료';
+
+      return;
+    }
+
+    target.innerText = '수정';
+    const { value: modifyText } = $textSpan.children[0];
+
+    const { TodoList } = this.state;
+
+    this.setState({
+      TodoList: TodoList.map((todo) => {
+        const [todoTitle, todoValue] = Object.entries(todo)[0];
+
+        if (title !== todoTitle) return todo;
+
+        todoValue.splice(idx, 1, modifyText);
+        return { [todoTitle]: todoValue };
+      }),
+    });
   }
 }

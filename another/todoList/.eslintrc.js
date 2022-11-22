@@ -24,5 +24,9 @@ module.exports = {
     'consistent-return': 'off',
     'react/no-unused-class-component-methods': 'off',
     'no-shadow': 'off',
+    'no-param-reassign': 'off',
+    'no-new': 'off',
+    'react/prop-types': 'off',
+    'react/sort-comp': 'off',
   },
 };

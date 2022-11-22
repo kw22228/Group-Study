@@ -1,3 +1,5 @@
-import TodoList from '@pages/todoList';
+import TodoList from '@pages/TodoList';
 
-const todoList = new TodoList('#root');
+// eslint-disable-next-line no-unused-vars
+const root = document.querySelector('#root');
+const todoList = new TodoList(root);
