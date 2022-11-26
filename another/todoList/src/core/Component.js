@@ -1,3 +1,5 @@
+import store from '@store';
+
 export default class Component {
   #target;
   #props;
@@ -6,6 +8,10 @@ export default class Component {
   constructor(target, props = {}) {
     this.#target = target;
     this.#props = props;
+
+    // store.subscribe(() => {
+    //   console.log(store.state);
+    // });
 
     this.setup();
     this.setEvent();

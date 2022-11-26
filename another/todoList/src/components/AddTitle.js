@@ -1,5 +1,8 @@
 import Component from '@core/Component';
 
+import store from '@store';
+import { todoTitleAdd } from '@store/actions/actions';
+
 export default class AddTitle extends Component {
   template() {
     return /* html */ `
@@ -9,8 +12,15 @@ export default class AddTitle extends Component {
   }
 
   setEvent() {
-    const { onAddTitle } = this.props;
+    // const { onAddTitle } = this.props;
+    this.addEvent('click', '#addTitleBtn', this.onClickHandler.bind(this));
+  }
 
-    this.addEvent('click', '#addTitleBtn', onAddTitle);
+  onClickHandler() {
+    const { value } = this.target.querySelector('#todoTitle');
+
+    if (!value) return false;
+
+    store.dispatch('todoReducer', todoTitleAdd({ title: value }));
   }
 }

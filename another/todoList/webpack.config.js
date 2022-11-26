@@ -47,6 +47,7 @@ module.exports = {
       '@components': path.resolve(__dirname, 'src/components/'),
       '@api': path.resolve(__dirname, 'src/api/'),
       '@lib': path.resolve(__dirname, 'src/lib/'),
+      '@store': path.resolve(__dirname, 'src/store/'),
     },
   },
 

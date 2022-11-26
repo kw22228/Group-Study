@@ -1,4 +1,4 @@
-import TodoList from '@pages/TodoList';
+import TodoList from '@pages/todoList';
 
 const root = document.querySelector('#root');
 

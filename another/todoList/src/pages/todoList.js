@@ -1,12 +1,12 @@
+import store from '@store';
+
 import Component from '@core/Component';
 import AddTitle from '@components/AddTitle';
-import List from '../components/List';
+// import List from '../components/List';
 
 export default class TodoList extends Component {
   setup() {
-    this.state = {
-      TodoList: [{ Todo: ['reading', 'sleeping'] }],
-    };
+    store.dispatch('todoReducer');
   }
 
   template() {
@@ -17,100 +17,97 @@ export default class TodoList extends Component {
   }
 
   mounted() {
-    const { TodoList } = this.state;
-
     new AddTitle(document.querySelector('.addTitleArea'), {
-      onAddTitle: this.onAddTitle.bind(this),
+      // onAddTitle: this.onAddTitle.bind(this),
     });
-    new List(document.querySelector('.listArea'), {
-      TodoList,
-      onAddList: this.onAddList.bind(this),
-      onDeleteList: this.onDeleteList.bind(this),
-      onModifyList: this.onModifyList.bind(this),
-    });
+    // new List(document.querySelector('.listArea'), {
+    //   onAddList: this.onAddList.bind(this),
+    //   onDeleteList: this.onDeleteList.bind(this),
+    //   onModifyList: this.onModifyList.bind(this),
+    // });
   }
 
-  onAddTitle() {
-    const { value } = this.target.querySelector('#todoTitle');
-    const { TodoList } = this.state;
+  // onAddTitle() {
+  //   const { value } = this.target.querySelector('#todoTitle');
+  //   const { TodoList } = this.state;
 
-    if (!value) return false;
+  //   if (!value) return false;
 
-    this.setState({ TodoList: [...TodoList, { [value]: [] }] });
-  }
+  //   this.setState({ TodoList: [...TodoList, { [value]: [] }] });
+  // }
 
-  onAddList({ target }) {
-    const { title } = target.closest('[data-title]').dataset;
-    const { value } = target.previousElementSibling;
+  // onAddList({ target }) {
+  //   const { title } = target.closest('[data-title]').dataset;
+  //   const { value } = target.previousElementSibling;
 
-    if (!value) return false;
+  //   if (!value) return false;
 
-    const { TodoList } = this.state;
+  //   const { TodoList } = this.state;
 
-    this.setState({
-      TodoList: TodoList.map((todo) => {
-        const [todoTitle, todoValue] = Object.entries(todo)[0];
+  //   this.setState({
+  //     TodoList: TodoList.map((todo) => {
+  //       const [todoTitle, todoValue] = Object.entries(todo)[0];
 
-        if (title !== todoTitle) return todo;
+  //       if (title !== todoTitle) return todo;
 
-        return {
-          [todoTitle]: [...todoValue, value],
-        };
-      }),
-    });
-  }
+  //       return {
+  //         [todoTitle]: [...todoValue, value],
+  //       };
+  //     }),
+  //   });
+  // }
 
-  onDeleteList({ target }) {
-    const $idx = target.closest('[data-idx]');
-    const { title } = target.closest('[data-title]').dataset;
-    const { idx } = $idx.dataset;
+  // onDeleteList({ target }) {
+  //   const $idx = target.closest('[data-idx]');
+  //   const { title } = target.closest('[data-title]').dataset;
+  //   const { idx } = $idx.dataset;
 
-    const { TodoList } = this.state;
+  //   const { TodoList } = this.state;
 
-    this.setState({
-      TodoList: TodoList.map((todo) => {
-        const [todoTitle, todoValue] = Object.entries(todo)[0];
+  //   this.setState({
+  //     TodoList: TodoList.map((todo) => {
+  //       const [todoTitle, todoValue] = Object.entries(todo)[0];
 
-        if (title !== todoTitle) return todo;
+  //       if (title !== todoTitle) return todo;
 
-        todoValue.splice(idx, 1);
+  //       todoValue.splice(idx, 1);
 
-        return { [todoTitle]: todoValue };
-      }),
-    });
-  }
+  //       return { [todoTitle]: todoValue };
+  //     }),
+  //   });
+  // }
 
-  onModifyList({ target }) {
-    const $idx = target.closest('[data-idx]');
-    const $textSpan = $idx.children[0];
-    const { title } = target.closest('[data-title]').dataset;
-    const { idx } = $idx.dataset;
+  // onModifyList({ target }) {
+  //   const $idx = target.closest('[data-idx]');
+  //   const $textSpan = $idx.children[0];
+  //   const { title } = target.closest('[data-title]').dataset;
+  //   const { idx } = $idx.dataset;
 
-    const flag = target.textContent;
+  //   const flag = target.textContent;
 
-    if (flag === '수정') {
-      const text = $textSpan.textContent;
+  //   if (flag === '수정') {
+  //     const text = $textSpan.textContent;
 
-      $textSpan.innerHTML = /* html */ `<input type="text" value="${text}" />`;
-      target.innerText = '수정완료';
+  //     $textSpan.innerHTML = /* html */ `<input type="text" value="${text}" />`;
+  //     target.innerText = '수정완료';
 
-      return;
-    }
+  //     return;
+  //   }
 
-    target.innerText = '수정';
-    const { value: modifyText } = $textSpan.children[0];
+  //   target.innerText = '수정';
+  //   const { value: modifyText } = $textSpan.children[0];
 
-    const { TodoList } = this.state;
+  //   const { TodoList } = this.state;
 
-    this.setState({
-      TodoList: TodoList.map((todo) => {
-        const [todoTitle, todoValue] = Object.entries(todo)[0];
+  //   this.setState({
+  //     TodoList: TodoList.map((todo) => {
+  //       const [todoTitle, todoValue] = Object.entries(todo)[0];
 
-        if (title !== todoTitle) return todo;
+  //       if (title !== todoTitle) return todo;
 
-        todoValue.splice(idx, 1, modifyText);
-        return { [todoTitle]: todoValue };
-      }),
-    });
-  }
+  //       todoValue.splice(idx, 1, modifyText);
+  //       return { [todoTitle]: todoValue };
+  //     }),
+  //   });
+  // }
 }
