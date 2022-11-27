@@ -1,4 +1,6 @@
+import store from '@store';
 import Component from '@core/Component';
+import { todoListUpdate, todoListDelete } from '@store/actions/actions';
 
 export default class ChildList extends Component {
   template() {
@@ -20,9 +22,38 @@ export default class ChildList extends Component {
   }
 
   setEvent() {
-    const { onDeleteList, onModifyList } = this.props;
+    this.addEvent('click', '.modifyBtn', (event) => this.onUpdateHandler(event)) // 수정
+      .addEvent('click', '.deleteBtn', (event) => this.onDeleteHandler(event)); // 삭제
+  }
 
-    this.addEvent('click', '.modifyBtn', (event) => onModifyList(event)) // 수정
-      .addEvent('click', '.deleteBtn', (event) => onDeleteList(event)); // 삭제
+  onDeleteHandler({ target }) {
+    const $idx = target.closest('[data-idx]');
+    const { title } = target.closest('[data-title]').dataset;
+    const { idx } = $idx.dataset;
+
+    store.dispatch('todoReducer', todoListDelete({ title, idx }));
+  }
+
+  onUpdateHandler({ target }) {
+    const $idx = target.closest('[data-idx]');
+    const $textSpan = $idx.children[0];
+    const { title } = target.closest('[data-title]').dataset;
+    const { idx } = $idx.dataset;
+
+    const flag = target.textContent;
+
+    if (flag === '수정') {
+      const text = $textSpan.textContent;
+
+      $textSpan.innerHTML = /* html */ `<input type="text" value="${text}" />`;
+      target.innerText = '수정완료';
+
+      return;
+    }
+
+    target.innerText = '수정';
+
+    const { value } = $textSpan.children[0];
+    store.dispatch('todoReducer', todoListUpdate({ title, idx, value }));
   }
 }

@@ -28,5 +28,6 @@ module.exports = {
     'no-new': 'off',
     'react/prop-types': 'off',
     'react/sort-comp': 'off',
+    'no-case-declarations': 'off',
   },
 };

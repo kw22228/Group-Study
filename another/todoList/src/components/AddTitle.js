@@ -12,7 +12,6 @@ export default class AddTitle extends Component {
   }
 
   setEvent() {
-    // const { onAddTitle } = this.props;
     this.addEvent('click', '#addTitleBtn', this.onClickHandler.bind(this));
   }
 

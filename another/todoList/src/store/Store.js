@@ -12,16 +12,23 @@ export default class Store {
     return this.#state;
   }
 
+  set state(value) {
+    if (this.#state === value) return;
+    if (JSON.stringify === JSON.stringify(value)) return;
+
+    this.#state = value;
+    this.#handlers.forEach((handler) => handler());
+  }
+
   static actionCreator = (type) => (payload) => ({ type, payload });
 
   dispatch(key, action = {}) {
     if (!key) throw new Error('reducerKey is not defined.');
 
-    this.#state = this.#reducers[key](action, this.#state);
-    this.#handlers.forEach((handler) => handler());
+    this.state = this.#reducers[key](action, this.#state);
   }
 
   subscribe(handler) {
-    this.#handlers.push(handler);
+    if (this.#handlers.length === 0) this.#handlers.push(handler);
   }
 }

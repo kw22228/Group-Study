@@ -9,9 +9,10 @@ export default class Component {
     this.#target = target;
     this.#props = props;
 
-    // store.subscribe(() => {
-    //   console.log(store.state);
-    // });
+    store.subscribe(() => {
+      this.render();
+      this.mounted();
+    });
 
     this.setup();
     this.setEvent();
@@ -40,6 +41,7 @@ export default class Component {
   mounted() {}
 
   render() {
+    console.log('render');
     this.#target.innerHTML = this.template();
   }
 
