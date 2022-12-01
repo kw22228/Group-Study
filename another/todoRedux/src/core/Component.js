@@ -5,7 +5,7 @@ export default class Component {
 
     constructor(target, props = {}) {
         this.#target = target;
-        this.#props = props;
+        this.#props = { append: false, ...props };
 
         this.setup();
         this.setEvent();
@@ -34,6 +34,14 @@ export default class Component {
     mounted() {}
 
     render() {
+        if (this.#props.append) {
+            const div = document.createElement('div');
+            div.innerHTML = this.template();
+
+            this.#target.appendChild(div.children[0]);
+            return;
+        }
+
         this.#target.innerHTML = this.template();
     }
 

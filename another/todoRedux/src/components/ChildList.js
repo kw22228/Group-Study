@@ -1,59 +1,83 @@
-import store from '@store';
-import Component from '@core/Component';
-import { todoListUpdate, todoListDelete } from '@store/actions/actions';
+import Component from '../core/Component';
+import Button from './common/Button';
+
+import store from '../redux';
+import { todoListDelete, todoListModify } from '../redux/action';
 
 export default class ChildList extends Component {
-  template() {
-    const { todoValue } = this.props;
+    template() {
+        const { todoValue } = this.props;
 
-    return /* html */ `
+        return /* html */ `
       ${todoValue
-        .map((v, index) => {
-          return /* html */ `
+          .map((v, index) => {
+              return /* html */ `
           <div data-idx='${index}'>
             <span>${v}</span>
-            <button class="modifyBtn">수정</button>
-            <button class="deleteBtn">삭제</button>
+            <span class="btnArea">
+              
+            </span>
           </div>
         `;
-        })
-        .join('')}
+          })
+          .join('')}
     `;
-  }
-
-  setEvent() {
-    this.addEvent('click', '.modifyBtn', (event) => this.onUpdateHandler(event)) // 수정
-      .addEvent('click', '.deleteBtn', (event) => this.onDeleteHandler(event)); // 삭제
-  }
-
-  onDeleteHandler({ target }) {
-    const $idx = target.closest('[data-idx]');
-    const { title } = target.closest('[data-title]').dataset;
-    const { idx } = $idx.dataset;
-
-    store.dispatch('todoReducer', todoListDelete({ title, idx }));
-  }
-
-  onUpdateHandler({ target }) {
-    const $idx = target.closest('[data-idx]');
-    const $textSpan = $idx.children[0];
-    const { title } = target.closest('[data-title]').dataset;
-    const { idx } = $idx.dataset;
-
-    const flag = target.textContent;
-
-    if (flag === '수정') {
-      const text = $textSpan.textContent;
-
-      $textSpan.innerHTML = /* html */ `<input type="text" value="${text}" />`;
-      target.innerText = '수정완료';
-
-      return;
     }
 
-    target.innerText = '수정';
+    mounted() {
+        const { todoValue } = this.props;
 
-    const { value } = $textSpan.children[0];
-    store.dispatch('todoReducer', todoListUpdate({ title, idx, value }));
-  }
+        todoValue.forEach((_, index) => {
+            const $parent = this.target.querySelector(`[data-idx='${index}']`);
+            const $btnArea = $parent.querySelector('.btnArea');
+
+            new Button($btnArea, {
+                append: true,
+                className: 'modifyBtn',
+                value: '수정',
+                onClickHandler: this.onModifyHandler.bind(this),
+            });
+
+            new Button($btnArea, {
+                append: true,
+                className: 'deleteBtn',
+                value: '삭제',
+                onClickHandler: this.onDeleteHandler.bind(this),
+            });
+        });
+    }
+
+    onDeleteHandler({ target }) {
+        const $idx = target.closest('[data-idx]');
+        const { title } = target.closest('[data-title]').dataset;
+        const { idx } = $idx.dataset;
+
+        // store.dispatch('todoReducer', todoListDelete({ title, idx }));
+        store.dispatch(todoListDelete({ title, idx }));
+    }
+
+    onModifyHandler({ target }) {
+        const $idx = target.closest('[data-idx]');
+        const $textSpan = $idx.children[0];
+        const { title } = target.closest('[data-title]').dataset;
+        const { idx } = $idx.dataset;
+
+        const flag = target.textContent;
+
+        if (flag.trim() === '수정') {
+            const text = $textSpan.textContent;
+
+            $textSpan.innerHTML = /* html */ `<input type="text" value="${text}" />`;
+            target.innerText = '수정완료';
+
+            return;
+        }
+
+        target.innerText = '수정';
+
+        const { value } = $textSpan.children[0];
+
+        // store.dispatch('todoReducer', todoListUpdate({ title, idx, value }));
+        store.dispatch(todoListModify({ title, idx, value }));
+    }
 }
