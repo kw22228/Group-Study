@@ -4,7 +4,7 @@ import Input from './common/Input';
 import Button from './common/Button';
 
 import store from '../redux';
-import { todoListAdd } from '../redux/action';
+import { todoActions } from '../redux/slices/todoSlices';
 
 export default class List extends Component {
     template() {
@@ -25,10 +25,6 @@ export default class List extends Component {
         }).join('')}
     `;
     }
-
-    // setEvent() {
-    //     this.addEvent('click', '.addBtn', event => this.onClickHandler(event));
-    // }
 
     mounted() {
         const { TodoList } = store.getState();
@@ -64,7 +60,7 @@ export default class List extends Component {
 
         if (!value) return false;
 
-        // store.dispatch('todoReducer', todoListAdd({ title, value }));
+        const { todoListAdd } = todoActions;
         store.dispatch(todoListAdd({ title, value }));
     }
 }

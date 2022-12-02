@@ -2,17 +2,18 @@ import AddTitle from '../components/AddTitle';
 import List from '../components/List';
 import Component from '../core/Component';
 
+import { useSelector } from '@reduxjs/toolkit';
 import store from '../redux';
-import { todoSetup } from '../redux/action';
+import { todoActions } from '../redux/slices/todoSlices';
 
 export default class TodoList extends Component {
     setup() {
-        store.dispatch(
-            todoSetup({
-                TodoList: [{ Todo: ['sleeping', 'swimming'] }],
-            })
-        );
-
+        console.log(store.getState());
+        // store.dispatch(
+        //     todoSetup({
+        //         TodoList: [{ Todo: ['sleeping', 'swimming'] }],
+        //     })
+        // );
         store.subscribe(() => {
             this.render();
             this.mounted();

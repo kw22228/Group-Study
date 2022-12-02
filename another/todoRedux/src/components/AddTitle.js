@@ -1,8 +1,9 @@
 import Component from '../core/Component';
-import store from '../redux';
-import { todoTitleAdd } from '../redux/action';
 import Button from './common/Button';
 import Input from './common/Input';
+
+import store from '../redux';
+import { todoActions } from '../redux/slices/todoSlices';
 
 export default class AddTitle extends Component {
     mounted() {
@@ -26,7 +27,7 @@ export default class AddTitle extends Component {
         const { value } = this.target.querySelector('#todoTitle');
         if (!value) return false;
 
-        // store.dispatch('todoReducer', todoTitleAdd({ title: value }));
+        const { todoTitleAdd } = todoActions;
         store.dispatch(todoTitleAdd({ title: value }));
     }
 }

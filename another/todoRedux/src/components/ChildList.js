@@ -2,7 +2,7 @@ import Component from '../core/Component';
 import Button from './common/Button';
 
 import store from '../redux';
-import { todoListDelete, todoListModify } from '../redux/action';
+import { todoActions } from '../redux/slices/todoSlices';
 
 export default class ChildList extends Component {
     template() {
@@ -52,7 +52,7 @@ export default class ChildList extends Component {
         const { title } = target.closest('[data-title]').dataset;
         const { idx } = $idx.dataset;
 
-        // store.dispatch('todoReducer', todoListDelete({ title, idx }));
+        const { todoListDelete } = todoActions;
         store.dispatch(todoListDelete({ title, idx }));
     }
 
@@ -77,7 +77,7 @@ export default class ChildList extends Component {
 
         const { value } = $textSpan.children[0];
 
-        // store.dispatch('todoReducer', todoListUpdate({ title, idx, value }));
+        const { todoListModify } = todoActions;
         store.dispatch(todoListModify({ title, idx, value }));
     }
 }
