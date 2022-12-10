@@ -1,70 +1,71 @@
 export default class Component {
-    #target;
-    #props;
-    #state;
+  #target;
+  #props;
+  #state;
 
-    constructor(target, props = {}) {
-        this.#target = target;
-        this.#props = { append: false, ...props };
+  constructor(target, props = {}) {
+    console.dir(target);
+    this.#target = target;
+    this.#props = { append: false, ...props };
 
-        this.setup();
-        this.setEvent();
-        this.render();
-        this.mounted();
-    }
-    get props() {
-        return this.#props;
-    }
-    get target() {
-        return this.#target;
-    }
-    get state() {
-        return this.#state;
-    }
-    set state(defaultState) {
-        this.#state = defaultState;
-    }
+    this.setup();
+    this.setEvent();
+    this.render();
+    this.mounted();
+  }
+  get props() {
+    return this.#props;
+  }
+  get target() {
+    return this.#target;
+  }
+  get state() {
+    return this.#state;
+  }
+  set state(defaultState) {
+    this.#state = defaultState;
+  }
 
-    setup() {}
+  setup() {}
 
-    template() {
-        return '';
-    }
+  template() {
+    return '';
+  }
 
-    mounted() {}
+  mounted() {}
 
-    render() {
-        if (this.#props.append) {
-            const div = document.createElement('div');
-            div.innerHTML = this.template();
+  render() {
+    if (this.#props.append) {
+      const div = document.createElement('div');
+      div.innerHTML = this.template();
 
-            this.#target.appendChild(div.children[0]);
-            return;
-        }
-
-        this.#target.innerHTML = this.template();
+      this.#target.appendChild(div.children[0]);
+      return;
     }
 
-    setState(newState) {
-        this.#state = { ...this.#state, ...newState };
+    this.#target.innerHTML = this.template();
+  }
 
-        this.render();
-        this.mounted();
-    }
+  setState(newState) {
+    this.#state = { ...this.#state, ...newState };
 
-    setEvent() {}
+    this.render();
+    this.mounted();
+  }
 
-    addEvent(eventType, selector, callback) {
-        const children = [...this.#target.querySelectorAll(selector)];
+  setEvent() {}
 
-        const isTarget = target => children.includes(target) || target.closest(selector);
+  addEvent(eventType, selector, callback) {
+    const children = [...this.#target.querySelectorAll(selector)];
 
-        this.#target.addEventListener(eventType, e => {
-            if (!isTarget(e.target)) return false;
+    const isTarget = target => children.includes(target) || target.closest(selector);
 
-            callback(e);
-        });
+    this.#target.addEventListener(eventType, e => {
+      if (!isTarget(e.target)) return false;
 
-        return this;
-    }
+      callback(e);
+    });
+
+    return this;
+  }
 }
