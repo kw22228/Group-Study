@@ -1,9 +1,9 @@
-import Component from '../core/Component';
+import PageCore from '../core/PageCore';
 
 import AddTitle from '../components/AddTitle';
 import List from '../components/List';
 
-export default class TodoList extends Component {
+export default class TodoList extends PageCore {
     setup() {}
 
     template() {

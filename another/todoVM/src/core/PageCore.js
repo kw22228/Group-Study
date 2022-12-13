@@ -1,4 +1,4 @@
-export default class Component {
+export default class PageCore {
     #target;
     #props;
     #state;
