@@ -12,18 +12,18 @@ export default class List extends Component {
         if (!TodoList) return '';
 
         return /* html */ `
-        ${TodoList.map(todo => {
-            const [todoTitle] = Object.keys(todo);
+            ${TodoList.map(todo => {
+                const [todoTitle] = Object.keys(todo);
 
-            return /* html */ `
-            <div style="padding: 10px;width: 40%; border:1px solid black; margin-top:10px;" data-title='${todoTitle}'>
-                <h1>${todoTitle}</h1>
-                <div class="addList"></div>
-                <div class="todoList"></div>
-            </div>
-          `;
-        }).join('')}
-    `;
+                return /* html */ `
+                <div style="padding: 10px;width: 40%; border:1px solid black; margin-top:10px;" data-title='${todoTitle}'>
+                    <h1>${todoTitle}</h1>
+                    <div class="addList"></div>
+                    <div class="todoList"></div>
+                </div>
+            `;
+            }).join('')}
+        `;
     }
 
     mounted() {
