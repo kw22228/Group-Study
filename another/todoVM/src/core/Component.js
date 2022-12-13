@@ -51,10 +51,6 @@ export default class Component {
         this.mounted();
     }
 
-    makeComponent(cp) {
-        return `{{__${cp}__}}`;
-    }
-
     setEvent() {}
 
     addEvent(eventType, selector, callback) {

@@ -1,10 +1,11 @@
-const AddTitle = () => {
-    const template = /* html */ `
-        <input type="text" id="todoTitle" />
-        <button id="addTitleBtn">추가</button>
-    `;
+import Input from '../components/common/Input';
+import Button from '../components/common/Button';
 
-    return { cpName: 'AddTitle', template };
+const AddTitle = () => {
+    return /* html */ `
+        ${Input({ id: 'todoTitle', className: 'todoTitle', placeholder: 'Title을 입력해주세요.' })}
+        ${Button({ id: 'addTitleBtn', className: 'addTitleBtn', value: '추가' })}
+    `;
 };
 
 export default AddTitle;

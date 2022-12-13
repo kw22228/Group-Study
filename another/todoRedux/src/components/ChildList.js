@@ -9,19 +9,19 @@ export default class ChildList extends Component {
         const { todoValue } = this.props;
 
         return /* html */ `
-      ${todoValue
-          .map((v, index) => {
-              return /* html */ `
-          <div data-idx='${index}'>
-            <span>${v}</span>
-            <span class="btnArea">
-              
-            </span>
-          </div>
+        ${todoValue
+            .map((v, index) => {
+                return /* html */ `
+            <div data-idx='${index}'>
+                <span>${v}</span>
+                <span class="btnArea">
+                
+                </span>
+            </div>
+            `;
+            })
+            .join('')}
         `;
-          })
-          .join('')}
-    `;
     }
 
     mounted() {
