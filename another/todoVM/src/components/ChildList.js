@@ -1,22 +1,73 @@
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
+import Component from '../core/Component';
 
-const ChildList = ({ todoValue }) => {
-    return /* html */ `
-        ${todoValue
-            .map((v, index) => {
-                return /* html */ `
-                <div data-idx='${index}'>
-                    <span>${v}</span>
-                    <span class="btnArea">
-                        ${Button({ className: 'modifyBtn', value: '수정' })}
-                        ${Button({ className: 'deleteBtn', value: '삭제' })}
-                    </span>
-                </div>
-            `;
-            })
-            .join('')}
-    `;
-};
+import store from '../redux';
+import { todoActions } from '../redux/slices/todoSlices';
 
-export default ChildList;
+export default class ChildList extends Component {
+    setup() {
+        this.modifyButton = new Button(
+            { className: 'modifyBtn', value: '수정' },
+            { onClickHandler: this.onModifyHandler.bind(this) }
+        );
+        this.deleteButton = new Button(
+            { className: 'deleteBtn', value: '삭제' },
+            { onClickHandler: this.onDeleteHandler.bind(this) }
+        );
+    }
+
+    template() {
+        const { todoValue } = this.props;
+
+        return /* html */ `
+            ${todoValue
+                .map((v, index) => {
+                    return /* html */ `
+                        <div data-idx='${index}'>
+                            <span>${v}</span>
+                            <span class="btnArea">
+                                ${this.modifyButton.template()}
+                                ${this.deleteButton.template()}
+                            </span>
+                        </div>
+                    `;
+                })
+                .join('')}
+        `;
+    }
+
+    onDeleteHandler({ target }) {
+        const $idx = target.closest('[data-idx]');
+        const { title } = target.closest('[data-title]').dataset;
+        const { idx } = $idx.dataset;
+
+        const { todoListDelete } = todoActions;
+        store.dispatch(todoListDelete({ title, idx }));
+    }
+
+    onModifyHandler({ target }) {
+        const $idx = target.closest('[data-idx]');
+        const $textSpan = $idx.children[0];
+        const { title } = target.closest('[data-title]').dataset;
+        const { idx } = $idx.dataset;
+
+        const flag = target.textContent;
+
+        if (flag.trim() === '수정') {
+            const text = $textSpan.textContent;
+
+            $textSpan.innerHTML = /* html */ `<input type="text" value="${text}" />`;
+            target.innerText = '수정완료';
+
+            return;
+        }
+
+        target.innerText = '수정';
+
+        const { value } = $textSpan.children[0];
+
+        const { todoListModify } = todoActions;
+        store.dispatch(todoListModify({ title, idx, value }));
+    }
+}

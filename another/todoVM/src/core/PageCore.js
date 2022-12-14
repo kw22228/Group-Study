@@ -1,3 +1,8 @@
+import currentPage from '../router/currentPage';
+import diff from '../lib/diff';
+
+import store from '../redux';
+
 export default class PageCore {
     #target;
     #props;
@@ -7,8 +12,12 @@ export default class PageCore {
         this.#target = target;
         this.#props = { append: false, ...props };
 
+        store.subscribe(() => {
+            this.render();
+        });
+
+        this.setRoutingPage();
         this.setup();
-        this.setEvent();
         this.render();
     }
     get props() {
@@ -26,44 +35,30 @@ export default class PageCore {
 
     setup() {}
 
+    setRoutingPage() {
+        currentPage.Page = this;
+    }
+
     template() {
         return '';
     }
 
-    mounted() {}
-
     render() {
-        if (this.#props.append) {
-            const div = document.createElement('div');
-            div.innerHTML = this.template();
+        // this.#target.innerHTML = this.template();
+        const newNode = this.#target.cloneNode(true);
+        newNode.innerHTML = this.template();
 
-            this.#target.appendChild(div.children[0]);
-            return;
+        const oldChildNodes = [...this.#target.childNodes];
+        const newChildNodes = [...newNode.childNodes];
+        const maxLength = Math.max(oldChildNodes.length, newChildNodes.length);
+        for (let i = 0; i < maxLength; i++) {
+            diff(this.#target, newChildNodes[i], oldChildNodes[i]);
         }
-
-        this.#target.innerHTML = this.template();
     }
 
     setState(newState) {
         this.#state = { ...this.#state, ...newState };
 
         this.render();
-        this.mounted();
-    }
-
-    setEvent() {}
-
-    addEvent(eventType, selector, callback) {
-        const children = [...this.#target.querySelectorAll(selector)];
-
-        const isTarget = target => children.includes(target) || target.closest(selector);
-
-        this.#target.addEventListener(eventType, e => {
-            if (!isTarget(e.target)) return false;
-
-            callback(e);
-        });
-
-        return this;
     }
 }
