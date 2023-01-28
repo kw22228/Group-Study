@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import TeaSet from './test/TestSet';
 

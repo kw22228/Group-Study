@@ -1,18 +1,11 @@
-let guest = 0;
-
-function Cup() {
-  console.log('cup');
-  // Bad: changing a preexisting variable!
-  guest = guest + 1;
-  return <h2>Tea cup for guest #{guest}</h2>;
-}
+import { useEffect, useState } from 'react';
 
 export default function TeaSet() {
-  return (
-    <>
-      <Cup />
-      <Cup />
-      <Cup />
-    </>
-  );
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    console.log('useEffet');
+
+    return () => console.log('clean up');
+  }, [count]);
+  return <button onClick={() => setCount(prev => prev + 1)}>{count}</button>;
 }
