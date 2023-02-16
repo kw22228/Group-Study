@@ -1,12 +1,9 @@
 import './App.css';
-import TeaSet from './test/TestSet';
+// import TeaSet from './test/TestSet';
+import DeferredValue from './deferredValue/DeferredValue';
 
 function App() {
-  return (
-    <div>
-      <TeaSet />
-    </div>
-  );
+  return <DeferredValue />;
 }
 
 export default App;
